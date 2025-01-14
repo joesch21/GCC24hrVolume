@@ -1,0 +1,7 @@
+services:
+  - name: gcc-24hr-volume
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    plan: free
+    autoDeploy: true
