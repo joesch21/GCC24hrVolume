@@ -5,22 +5,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GCC Staking Rewards</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
-        h1 { color: #007BFF; }
-        p { font-size: 18px; }
-        .highlight { color: #28a745; font-weight: bold; }
-        .error { color: red; font-weight: bold; }
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            padding: 0;
+            background: linear-gradient(135deg, #1e1e2f, #3a3a5e);
+            color: white;
+        }
+
+        h1 {
+            color: #00d1ff;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 10px rgba(0, 209, 255, 0.8);
+        }
+
+        p {
+            font-size: 20px;
+            line-height: 1.6;
+        }
+
+        .highlight {
+            color: #32cd32;
+            font-weight: bold;
+            text-shadow: 1px 1px 5px rgba(50, 205, 50, 0.8);
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+
+        .data-box {
+            border: 2px solid #00d1ff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 209, 255, 0.8);
+            background: rgba(0, 0, 0, 0.8);
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+        .footer a {
+            color: #00d1ff;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
-    <h1>🔥 GCC Staking Rewards Portal 🔥</h1>
-
-    {% if error %}
-        <p class="error">⚠️ {{ error }}</p>
+    <h1>🌟 GCC Staking Rewards 🌟</h1>
+    {% if data %}
+        <div class="data-box">
+            <p><strong>📡 Address:</strong> <span class="highlight">{{ data.address }}</span></p>
+            <p><strong>🔗 Chain ID:</strong> <span class="highlight">{{ data.chainId }}</span></p>
+            <p><strong>💰 Price (USD):</strong> <span class="highlight">{{ data.priceUsd|round(6) }}</span></p>
+            <p><strong>📊 24h Price Change (USD):</strong> <span class="highlight">{{ data.priceUsd24hAgo|round(6) }}</span></p>
+            <p><strong>📅 7d Price Change (USD):</strong> <span class="highlight">{{ data.priceUsd7dAgo|round(6) }}</span></p>
+            <p><strong>🏦 Total Reserve (USD):</strong> <span class="highlight">{{ data.totalReserveUsd|round(2) }}</span></p>
+            <p><strong>💹 Circulating Supply (USD):</strong> <span class="highlight">{{ data.circulatingSupplyUsd|round(2) }}</span></p>
+            <p><strong>📈 24h Trading Volume (USD):</strong> <span class="highlight">{{ data.volume24hUsd|round(6) }}</span></p>
+            <p><strong>🌐 Market Cap (USD):</strong> <span class="highlight">{{ data.marketCapUsd|round(2) }}</span></p>
+            <p><strong>📊 Trades in the last 24h:</strong> <span class="highlight">{{ data.trades24h }}</span></p>
+        </div>
     {% else %}
-        <p>📊 <strong>24h Trading Volume (USD):</strong> <span class="highlight">${{ volume_24h_usd|round(2) }}</span></p>
-        <p>💰 <strong>1% Staking Rewards (USD):</strong> <span class="highlight">${{ staking_rewards_usd|round(2) }}</span></p>
-        <p>🏆 <strong>1% Staking Rewards (GCC):</strong> <span class="highlight">{{ staking_rewards_gcc|round(2) }} GCC</span></p>
+        <p class="error">❌ Data not available. Please try again later.</p>
     {% endif %}
+    <div class="footer">
+        <p>Powered by <a href="https://coinbrain.com" target="_blank">CoinBrain API</a></p>
+    </div>
 </body>
 </html>

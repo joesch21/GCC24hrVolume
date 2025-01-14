@@ -1,8 +1,13 @@
-from flask import Flask, render_template
+from flask import Flask, jsonify, render_template
 import requests
-import os
 
 app = Flask(__name__, template_folder="../templates")
+
+@app.route('/')
+def home():
+    # ✅ Debug check to confirm template path
+    print(f"Templates Path: {app.template_folder}")
+    return render_template('index.html')
 
 # Function to fetch GCC volume and price from CoinBrain API
 def get_gcc_volume_from_api():
@@ -14,6 +19,8 @@ def get_gcc_volume_from_api():
         response = requests.post(url, json=payload, headers=headers)
         response.raise_for_status()
         data = response.json()
+        if not isinstance(data, list) or len(data) == 0:
+            return {"error": "Unexpected API response structure."}
         return data
     except requests.exceptions.RequestException as e:
         return {"error": f"Error fetching data: {e}"}
@@ -29,25 +36,22 @@ def calculate_staking_rewards(data):
     except (KeyError, TypeError, IndexError) as e:
         return {"error": f"Error calculating staking rewards: {e}"}
 
-# ✅ Serve the index page and display data
-@app.route('/')
-def home():
+# API Endpoint for Staking Report
+@app.route('/api/staking', methods=['GET'])
+def staking_report():
     data = get_gcc_volume_from_api()
     if "error" in data:
-        return render_template('index.html', error=data['error'])
+        return jsonify(data), 500
 
     results = calculate_staking_rewards(data)
     if isinstance(results, dict) and "error" in results:
-        return render_template('index.html', error=results['error'])
+        return jsonify(results), 500
 
-    # Send data to the HTML page
-    return render_template('index.html',
-                           volume_24h_usd=results[0],
-                           staking_rewards_usd=results[1],
-                           staking_rewards_gcc=results[2])
-
+    return jsonify({
+        "24h Trading Volume (USD)": results[0],
+        "1% Staking Rewards (USD)": results[1],
+        "1% Staking Rewards (GCC)": results[2]
+    })
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 10000))
-    app.run(host="0.0.0.0", port=port)
-
+    app.run(host="0.0.0.0", port=10000, debug=True)
