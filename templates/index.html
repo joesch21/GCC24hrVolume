@@ -4,73 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GCC Staking Rewards</title>
-    <style>
-        body {
-            font-family: 'Poppins', Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-            padding: 0;
-            background: linear-gradient(135deg, #1e1e2f, #3a3a5e);
-            color: white;
-        }
-
-        h1 {
-            color: #00d1ff;
-            font-size: 2.5rem;
-            text-transform: uppercase;
-            text-shadow: 2px 2px 10px rgba(0, 209, 255, 0.8);
-        }
-
-        p {
-            font-size: 20px;
-            line-height: 1.6;
-        }
-
-        .highlight {
-            color: #32cd32;
-            font-weight: bold;
-            text-shadow: 1px 1px 5px rgba(50, 205, 50, 0.8);
-        }
-
-        .error {
-            color: red;
-            font-weight: bold;
-        }
-
-        .data-box {
-            border: 2px solid #00d1ff;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 0 20px rgba(0, 209, 255, 0.8);
-            background: rgba(0, 0, 0, 0.8);
-            display: inline-block;
-            margin-top: 20px;
-        }
-
-        .footer {
-            margin-top: 50px;
-            font-size: 16px;
-            opacity: 0.8;
-        }
-
-        .footer a {
-            color: #00d1ff;
-            text-decoration: none;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1> GCC 24 HR Trading Intel </h1>
+    <h1> GCC 24 HR Trading Activity </h1>
     {% if data %}
         <div class="data-box">
             <p><strong>📡 Address:</strong> <span class="highlight">{{ data.address }}</span></p>
-            <p><strong>🔗 Chain ID:</strong> <span class="highlight">{"" data.chainId }}</span></p>
+            <p><strong>🔗 Chain ID:</strong> <span class="highlight">{{ data.chainId }}</span></p>
             <p><strong>💰 Price (USD):</strong> <span class="highlight">{{ data.priceUsd|round(6) }}</span></p>
             <p><strong>📊 24h Price Change (USD):</strong> <span class="highlight">{{ data.priceUsd24hAgo|round(6) }}</span></p>
             <p><strong>📅 7d Price Change (USD):</strong> <span class="highlight">{{ data.priceUsd7dAgo|round(6) }}</span></p>
             <p><strong>🏦 Total Reserve (USD):</strong> <span class="highlight">{{ data.totalReserveUsd|round(2) }}</span></p>
             <p><strong>💹 Circulating Supply (USD):</strong> <span class="highlight">{{ data.circulatingSupplyUsd|round(2) }}</span></p>
             <p><strong>📈 24h Trading Volume (USD):</strong> <span class="highlight">{{ data.volume24hUsd|round(6) }}</span></p>
+            <p><strong>📈 GCC Traded Volume (GCC):</strong> <span class="highlight">{{ data.gccTradedVolume|round(6) }}</span></p>
+            <p><strong>🏆 Reward to Token Holders (1% of Traded Volume):</strong> <span class="highlight">{{ data.rewardTokenHolders|round(6) }} GCC</span></p>
+            <p><strong>🏅 Reward to NFT Holders (1% of Traded Volume):</strong> <span class="highlight">{{ data.rewardNFTHolders|round(6) }} GCC</span></p>
             <p><strong>🌐 Market Cap (USD):</strong> <span class="highlight">{{ data.marketCapUsd|round(2) }}</span></p>
             <p><strong>📊 Trades in the last 24h:</strong> <span class="highlight">{{ data.trades24h }}</span></p>
         </div>

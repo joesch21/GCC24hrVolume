@@ -9,6 +9,12 @@ def home():
     data = get_gcc_volume_from_api()
     if "error" in data:
         return render_template('index.html', data=None)
+    # ✅ Calculate the total USD volume divided by the price of GCC
+    total_usd_volume = sum([data[0].get('volume24hUsd', 0)])
+    data[0]['gccTradedVolume'] = total_usd_volume / data[0].get('priceUsd', 1)
+    # ✅ Calculate rewards for Token and NFT holders
+    data[0]['rewardTokenHolders'] = data[0]['gccTradedVolume'] * 0.01
+    data[0]['rewardNFTHolders'] = data[0]['gccTradedVolume'] * 0.01
     # ✅ Pass all data directly to the template
     return render_template('index.html', data=data[0])
 
