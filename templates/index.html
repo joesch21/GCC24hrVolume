@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCC Staking Rewards</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        h1 { color: #007BFF; }
+        p { font-size: 18px; }
+        .highlight { color: #28a745; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>🔥 GCC Staking Rewards Portal 🔥</h1>
+
+    {% if error %}
+        <p class="error">⚠️ {{ error }}</p>
+    {% else %}
+        <p>📊 <strong>24h Trading Volume (USD):</strong> <span class="highlight">${{ volume_24h_usd|round(2) }}</span></p>
+        <p>💰 <strong>1% Staking Rewards (USD):</strong> <span class="highlight">${{ staking_rewards_usd|round(2) }}</span></p>
+        <p>🏆 <strong>1% Staking Rewards (GCC):</strong> <span class="highlight">{{ staking_rewards_gcc|round(2) }} GCC</span></p>
+    {% endif %}
+</body>
+</html>
