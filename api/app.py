@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 import requests
+import os
 
 app = Flask(__name__, template_folder="../templates")
 
@@ -45,5 +46,8 @@ def home():
                            staking_rewards_usd=results[1],
                            staking_rewards_gcc=results[2])
 
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000, debug=True)
+    port = int(os.environ.get('PORT', 10000))
+    app.run(host="0.0.0.0", port=port)
+
