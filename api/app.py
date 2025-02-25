@@ -5,32 +5,45 @@ app = Flask(__name__, template_folder="./templates")
 
 @app.route('/')
 def home():
-    # ✅ Fetch data and ensure values are defined
+    # This still renders the HTML page
     data = get_gcc_volume_from_api()
-    if "error" in data:
+    if not data:
         return render_template('index.html', data=None)
-    # ✅ Calculate the total USD volume divided by the price of GCC
-    total_usd_volume = sum([data[0].get('volume24hUsd', 0)])
-    data[0]['gccTradedVolume'] = total_usd_volume / data[0].get('priceUsd', 1)
-    # ✅ Calculate rewards for Token and NFT holders
-    data[0]['rewardTokenHolders'] = data[0]['gccTradedVolume'] * 0.01
-    data[0]['rewardNFTHolders'] = data[0]['gccTradedVolume'] * 0.01
-    # ✅ Pass all data directly to the template
+
+    # Do your volume calculations
+    data[0]['gccTradedVolume'] = ...
+    data[0]['rewardTokenHolders'] = ...
+    data[0]['rewardNFTHolders'] = ...
+
     return render_template('index.html', data=data[0])
 
-# Function to fetch GCC volume and price from CoinBrain API
+# ✅ NEW: Provide a JSON endpoint
+@app.route('/api/gcc_volume', methods=['GET'])
+def api_gcc_volume():
+    data = get_gcc_volume_from_api()
+    if not data:
+        return jsonify({"error": "Failed to fetch data"}), 500
+
+    # Perform the same calculations
+    data[0]['gccTradedVolume'] = ...
+    data[0]['rewardTokenHolders'] = ...
+    data[0]['rewardNFTHolders'] = ...
+
+    # Return JSON data
+    return jsonify(data[0])
+
 def get_gcc_volume_from_api():
     url = "https://api.coinbrain.com/public/coin-info"
     headers = {'Content-Type': 'application/json'}
     payload = {"56": ["0x092aC429b9c3450c9909433eB0662c3b7c13cF9A"]}
-    
+
     try:
         response = requests.post(url, json=payload, headers=headers)
         response.raise_for_status()
         data = response.json()
         return data if isinstance(data, list) else []
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching data: {e}")
+        print(f"Error: {e}")
         return []
 
 if __name__ == "__main__":
